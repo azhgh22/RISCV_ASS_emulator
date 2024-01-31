@@ -1,0 +1,1 @@
+g++ main.c++ ./parser/*.c++ ./commands/*.c++ ./CPU/*.c++ ./memory/*.c++

@@ -3,7 +3,10 @@
 
 #include <iostream>
 #include <map>
-#include "memory/memory.h"
+#include <set>
+#include <vector>
+#include "../memory/memory.h"
+#include "../CPU/cpu.h"
 
 using namespace std;
 
@@ -16,8 +19,8 @@ typedef struct
 } add;
 
 
-void* add_init();
-void add_run(void* st,map<string,int>& registers,Memory& mem);
+void* add_init(vector<string>& tokens,cpu& regs,set<string>& unconfirmed_labels);
+void add_run(void* st,cpu& regs,Memory& mem,map<string,unsigned int>& labels);
 
 
 #endif

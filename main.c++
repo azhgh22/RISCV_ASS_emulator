@@ -25,9 +25,9 @@ string get_file_name(int argc,char** argv){
 int main(int argc,char* argv[]){
     string file = get_file_name(argc,argv);
     
-    Parser p(file);
     Memory m;
     cpu c;
+    Parser p(file,&m,&c);
 
     // while(c.getProgramCounter()!=p.vector().size()){
     //     Command cmd = p.vector[c.getProgramCounter()];
