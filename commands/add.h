@@ -19,7 +19,7 @@ typedef struct
 } add;
 
 
-void* add_init(vector<string>& tokens,cpu& regs,set<string>& unconfirmed_labels);
+void* add_init(vector<string>& tokens,string line,cpu& regs,set<string>& unconfirmed_labels);
 void add_run(void* st,cpu& regs,Memory& mem,map<string,unsigned int>& labels);
 
 

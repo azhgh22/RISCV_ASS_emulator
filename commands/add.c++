@@ -1,7 +1,7 @@
 #include "add.h"
 
 
-void* add_init(vector<string>& tokens,cpu& regs,set<string>& unconfirmed_labels){
+void* add_init(vector<string>& tokens,string line,cpu& regs,set<string>& unconfirmed_labels){
     if(tokens.size()!=3){
         throw invalid_argument("Invalid arguments in ADD");
     }

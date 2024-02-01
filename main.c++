@@ -29,11 +29,11 @@ int main(int argc,char* argv[]){
     cpu c;
     Parser p(file,&m,&c);
 
-    // while(c.getProgramCounter()!=p.vector().size()){
-    //     Command cmd = p.vector[c.getProgramCounter()];
-    //     c.cmd_runs(&cmd.cmd_ptr,c.registers,m);
-    // }
+    p.print();
 
-
-
+    int pc = c.load_word("pc");
+    while(pc<p.count_cmds()){
+        p.run(pc);
+        pc=c.load_word("pc");
+    }
 }

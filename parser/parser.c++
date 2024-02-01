@@ -20,6 +20,7 @@ string remove_comments(string s){
 Parser::Parser(string file_path,Memory* mem,cpu* regs){
     this->mem=mem;
     this->regs=regs;
+    init_cmds();
     ifstream f(file_path);
     string line;
 
@@ -108,7 +109,7 @@ void Parser::parse_line(string line){
     if(cmd_inits.find(cmd_name)!=cmd_inits.end()){
         // create command and put it into cmd_queue;
         Command cmd;
-        cmd.cmd_ptr = cmd_inits[cmd_name](tokens,*regs,unconfirmed_labels);
+        cmd.cmd_ptr = cmd_inits[cmd_name](tokens,line,*regs,unconfirmed_labels);
         cmd.type=cmd_name;
         cmd_queue.push_back(cmd);
     }
@@ -133,4 +134,19 @@ void Parser::print(){
     for(pair<string,unsigned int>  l : labels){
         cout<<l.first<<"  "<<l.second<<endl;
     }
+    cout<<"#########"<<endl;
+    for(int i=0;i<cmd_queue.size();i++){
+        cout<<cmd_queue[i].type<<endl;
+    }
+}
+
+
+void Parser::run(int cmd_idx){
+    Command cmd = cmd_queue[cmd_idx];
+    cmd_runs[cmd.type](cmd.cmd_ptr,*regs,*mem,labels);
+}
+
+
+unsigned int Parser::count_cmds(){
+    return cmd_queue.size();
 }

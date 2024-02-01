@@ -19,7 +19,7 @@ typedef struct
 }Command;
 
 
-typedef void* (*INSTR_INIT)(vector<string>& tokens,cpu& regs,set<string>& unconfirmed_labels);
+typedef void* (*INSTR_INIT)(vector<string>& tokens,string line,cpu& regs,set<string>& unconfirmed_labels);
 typedef void (*INSTR_RUN)(void* st,cpu& regs,Memory& mem,map<string,unsigned int>& labels);
 
 class Parser{
@@ -41,6 +41,8 @@ public:
     Parser(string file_path,Memory* mem,cpu* regs);
     ~Parser();
     void print();
+    void run(int cmd_idx);
+    unsigned int count_cmds();
 };
 
 #endif
