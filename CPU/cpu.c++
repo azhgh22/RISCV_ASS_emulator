@@ -55,3 +55,11 @@ void cpu::store_byte(string reg,int val){
     mask=~mask;
     registers[reg]=val&mask;
 }
+
+void cpu::next(int pos){
+    if(pos==-1){
+        registers["pc"]++;
+    }else{
+        registers["pc"]=pos;
+    }
+}

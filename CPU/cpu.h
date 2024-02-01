@@ -22,6 +22,7 @@ public:
     void store_word(string reg,int val);
     void store_half(string reg,int val);
     void store_byte(string reg,int val);
+    void next(int pos);
 };
 
 #endif

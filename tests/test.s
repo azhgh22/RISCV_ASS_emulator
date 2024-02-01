@@ -1,13 +1,7 @@
 .text 
 
 
-
-li x11 0b10000000000000000000000000000001
-# sw x11 0(sp)
-# slli x11 x11 31
-# lb x11 0(sp)
-li x10 1
-ecall
+addi x0 x0 -1
 
 
 # main:
