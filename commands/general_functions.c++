@@ -21,32 +21,23 @@ int to_number(string s){
 
 
 string find_reg(string& line,string type){
-    cout<<"finding REG"<<endl;
-    cout<<line<<endl;
     string error = string("invlaid arguments in: ")+type;
-    cout<<"CH 1"<<endl;
-    int end_idx = line.find_first_of(" ");
+    int end_idx = line.find_first_of(" ,");
     if(end_idx==string::npos) __throw_invalid_argument(error.c_str());
-    cout<<"CH 2"<<endl;
     string ret_val = line.substr(0,end_idx);
     line = line.substr(end_idx);
     return ret_val;
 }
 
 int find_num(string& line,string type){
-    cout<<"finding OFFSET"<<endl;
-    cout<<line<<endl;
     string error = string("invlaid arguments in: ")+type;
     int check_minus = line.find("-");
     if(check_minus!=string::npos) __throw_invalid_argument(error.c_str());
-    cout<<"CH 1"<<endl;
     int start_idx = line.find_first_of("0123456789"); 
     if(start_idx==string::npos) __throw_invalid_argument(error.c_str());
-    cout<<"CH 2"<<endl;
     line=line.substr(start_idx);
     int end_idx = line.find_first_of(" (");
     if(start_idx==string::npos) __throw_invalid_argument(error.c_str());
-    cout<<"CH 3"<<endl;
     string number = line.substr(0,end_idx);
     if(is_number(number)){
         line = line.substr(end_idx);
@@ -57,22 +48,16 @@ int find_num(string& line,string type){
 }
 
 string find_from_reg(string& line,string type){
-    cout<<"finding FROM"<<endl;
-    cout<<line<<endl;
     string error = string("invlaid arguments in: ")+type;
-    cout<<"CH 1"<<endl;
     int start_idx = line.find_first_not_of(" (");
     if(start_idx==string::npos) __throw_invalid_argument(error.c_str());
-    cout<<"CH 2"<<endl;
     line=line.substr(start_idx);
     int end_idx = line.find_first_of(" )");
     if(end_idx==string::npos) __throw_invalid_argument(error.c_str());
-    cout<<"CH 3"<<endl;
     string from = line.substr(0,end_idx);
     line = line.substr(end_idx);
     int ch_idx = line.find_first_not_of(" )");
     if(ch_idx!=string::npos) __throw_invalid_argument(error.c_str());
-    cout<<"CH 4"<<endl;
     return from;
 }
 
@@ -104,10 +89,10 @@ string remove_comments(string s){
 void tokenise(vector<string>& tokens,string line){
     string word = "";
     for(int i=0;i<line.size();i++){
-        if(line[i]==' ' && word!=""){
+        if((line[i]==' ' || line[i]==',') && word!=""){
             tokens.push_back(word);
             word="";
-        }else if(line[i]!=' '){
+        }else if(line[i]!=' ' && line[i]!=','){
             word+=line[i];
         }
     }
