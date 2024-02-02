@@ -8,7 +8,7 @@ using namespace std;
 
 string get_file_name(int argc,char** argv){
     if(argc!=2){
-        throw invalid_argument("incorect number of arguments!!!");
+        __throw_invalid_argument("INVALid bad");
     }
 
     string file_path = argv[1];

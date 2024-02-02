@@ -1,9 +1,5 @@
 .text 
 
-
-addi x0 x0 -1
-
-
 # main:
 # addi sp sp -8
 

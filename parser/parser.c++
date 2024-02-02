@@ -1,22 +1,5 @@
 #include "parser.h"
 
-string ltrim(string s){
-    size_t idx = s.find_first_not_of(" \t\r\n");
-    if(idx!=string::npos){
-        return s.substr(idx);
-    }
-
-    return s;
-}
-
-string remove_comments(string s){
-    size_t idx = s.find_first_of("#");
-    if(idx!=string::npos){
-        return s.substr(0,idx);
-    }
-    return s;
-}
-
 Parser::Parser(string file_path,Memory* mem,cpu* regs){
     this->mem=mem;
     this->regs=regs;
@@ -51,43 +34,6 @@ Parser::~Parser(){
     }
 }
 
-void tokenise(vector<string>& tokens,string line){
-    string word = "";
-    for(int i=0;i<line.size();i++){
-        if(line[i]==' ' && word!=""){
-            tokens.push_back(word);
-            word="";
-        }else if(line[i]!=' '){
-            word+=line[i];
-        }
-    }
-
-    if(word!=""){
-        tokens.push_back(word);
-    }
-}
-
-bool isLabel(vector<string>& tokens){
-    if(tokens.size()==0) return false;
-    if(tokens.size()>1){
-        if(tokens[1]==":"){
-            tokens.erase(tokens.begin()+1);
-            tokens[0]+=":";
-            return true;
-        }
-
-        if(tokens[0][tokens[0].size()-1]==':'){
-            return true;
-        }
-
-        return false;
-    }else{
-        if(tokens[0][tokens[0].size()-1]==':'){
-            return true;
-        }
-        return false;
-    }
-}
 
 void Parser::parse_line(string line){
     // parse line and add appropriate command to vector
@@ -110,7 +56,7 @@ void Parser::parse_line(string line){
         // create command and put it into cmd_queue;
         Command cmd;
         cmd.cmd_ptr = cmd_inits[cmd_name](tokens,line,*regs,unconfirmed_labels);
-        cmd.type=cmd_name;
+        cmd.type=to_lower(cmd_name);
         cmd_queue.push_back(cmd);
     }
 
@@ -123,11 +69,11 @@ void Parser::init_cmds(){
 }
 
 void Parser::put_inits(){
-    cmd_inits["add"] = add_init;
+    cmd_inits[to_lower(string("add"))] = add_init;
 }
 
 void Parser::put_runs(){
-    cmd_runs["add"]= add_run;
+    cmd_runs[to_lower(string("add"))]= add_run;
 }
 
 void Parser::print(){

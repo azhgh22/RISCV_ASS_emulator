@@ -10,6 +10,7 @@
 #include "../memory/memory.h"
 #include "../CPU/cpu.h"
 #include "includes.h"
+#include "../commands/general_functions.h"
 using namespace std;
 
 typedef struct 
