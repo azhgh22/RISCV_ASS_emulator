@@ -3,6 +3,7 @@
 Parser::Parser(string file_path,Memory* mem,cpu* regs){
     this->mem=mem;
     this->regs=regs;
+    init_genral_strings();
     init_cmds();
     ifstream f(file_path);
     string line;
@@ -14,7 +15,7 @@ Parser::Parser(string file_path,Memory* mem,cpu* regs){
     f.close();
 
     analise_labels();
-    
+    labels["1"]=cmd_queue.size();
 }
 
 void Parser::analise_labels(){
@@ -30,15 +31,33 @@ Parser::~Parser(){
     //free all mallocs
     for(int i=0;i<cmd_queue.size();i++){
         Command c = cmd_queue[i];
-        delete c.cmd_ptr;
+        if(c.cmd_ptr!=nullptr){
+            delete c.cmd_ptr;
+        }
     }
 }
 
+void Parser::init_genral_strings(){
+    general_strings.insert(".text");
+    general_strings.insert(".global");
+}
 
 void Parser::parse_line(string line){
     // parse line and add appropriate command to vector
     vector<string> tokens;
     tokenise(tokens,line);
+
+    if(tokens.size()==0){
+        return;
+    }
+
+    if(general_strings.find(tokens[0])!=general_strings.end()){
+        tokens.erase(tokens.begin());
+    }
+
+    if(tokens.size()==0){
+        return;
+    }
 
     if(isLabel(tokens)){
         string label_name = tokens[0].substr(0,tokens[0].size()-1);
@@ -58,6 +77,8 @@ void Parser::parse_line(string line){
         cmd.cmd_ptr = cmd_inits[cmd_name](tokens,line,*regs,unconfirmed_labels);
         cmd.type=to_lower(cmd_name);
         cmd_queue.push_back(cmd);
+    }else{
+        throw invalid_argument(cmd_name+" instuction does not exist");
     }
 
 }
@@ -69,59 +90,61 @@ void Parser::init_cmds(){
 }
 
 void Parser::put_inits(){
-    cmd_inits[to_lower(string("add"))] = add_init;
-    cmd_inits[to_lower(string("addi"))] = addi_init;
-    cmd_inits[to_lower(string("beq"))] = beq_init;
-    cmd_inits[to_lower(string("bge"))] = bge_init;
-    cmd_inits[to_lower(string("bgt"))] = bgt_init;
-    cmd_inits[to_lower(string("ble"))] = ble_init;
-    cmd_inits[to_lower(string("blt"))] = blt_init;
-    cmd_inits[to_lower(string("bne"))] = bne_init;
-    cmd_inits[to_lower(string("call"))] = call_init;
-    cmd_inits[to_lower(string("div"))] = div_init;
-    cmd_inits[to_lower(string("j"))] = j_init;
-    cmd_inits[to_lower(string("jal"))] = jal_init;
-    cmd_inits[to_lower(string("jalr"))] = jalr_init;
-    cmd_inits[to_lower(string("jr"))] = jr_init;
-    cmd_inits[to_lower(string("lb"))] = lb_init;
-    cmd_inits[to_lower(string("lh"))] = lh_init;
-    cmd_inits[to_lower(string("li"))] = li_init;
-    cmd_inits[to_lower(string("lw"))] = lw_init;
-    cmd_inits[to_lower(string("mul"))] = mul_init;
-    cmd_inits[to_lower(string("mv"))] = mv_init;
-    cmd_inits[to_lower(string("ret"))] = ret_init;
-    cmd_inits[to_lower(string("sb"))] = sb_init;
-    cmd_inits[to_lower(string("sh"))] = sh_init;
-    cmd_inits[to_lower(string("sub"))] = sub_init;
-    cmd_inits[to_lower(string("sw"))] = sw_init;
+    cmd_inits["add"] = add_init;
+    cmd_inits["addi"] = addi_init;
+    cmd_inits["beq"] = beq_init;
+    cmd_inits["bge"] = bge_init;
+    cmd_inits["bgt"] = bgt_init;
+    cmd_inits["ble"] = ble_init;
+    cmd_inits["blt"] = blt_init;
+    cmd_inits["bne"] = bne_init;
+    cmd_inits["call"] = call_init;
+    cmd_inits["div"] = div_init;
+    cmd_inits["j"] = j_init;
+    cmd_inits["jal"] = jal_init;
+    cmd_inits["jalr"] = jalr_init;
+    cmd_inits["jr"] = jr_init;
+    cmd_inits["lb"] = lb_init;
+    cmd_inits["lh"] = lh_init;
+    cmd_inits["li"] = li_init;
+    cmd_inits["lw"] = lw_init;
+    cmd_inits["mul"] = mul_init;
+    cmd_inits["mv"] = mv_init;
+    cmd_inits["ret"] = ret_init;
+    cmd_inits["sb"] = sb_init;
+    cmd_inits["sh"] = sh_init;
+    cmd_inits["sub"] = sub_init;
+    cmd_inits["sw"] = sw_init;
+    cmd_inits["ecall"] = ecall_init;
 }
 
 void Parser::put_runs(){
-    cmd_runs[to_lower(string("add"))] = add_run;
-    cmd_runs[to_lower(string("addi"))] = addi_run;
-    cmd_runs[to_lower(string("beq"))] = beq_run;
-    cmd_runs[to_lower(string("bge"))] = bge_run;
-    cmd_runs[to_lower(string("bgt"))] = bgt_run;
-    cmd_runs[to_lower(string("ble"))] = ble_run;
-    cmd_runs[to_lower(string("blt"))] = blt_run;
-    cmd_runs[to_lower(string("bne"))] = bne_run;
-    cmd_runs[to_lower(string("call"))] = call_run;
-    cmd_runs[to_lower(string("div"))] = div_run;
-    cmd_runs[to_lower(string("j"))] = j_run;
-    cmd_runs[to_lower(string("jal"))] = jal_run;
-    cmd_runs[to_lower(string("jalr"))] = jalr_run;
-    cmd_runs[to_lower(string("jr"))] = jr_run;
-    cmd_runs[to_lower(string("lb"))] = lb_run;
-    cmd_runs[to_lower(string("lh"))] = lh_run;
-    cmd_runs[to_lower(string("li"))] = li_run;
-    cmd_runs[to_lower(string("lw"))] = lw_run;
-    cmd_runs[to_lower(string("mul"))] = mul_run;
-    cmd_runs[to_lower(string("mv"))] = mv_run;
-    cmd_runs[to_lower(string("ret"))] = ret_run;
-    cmd_runs[to_lower(string("sb"))] = sb_run;
-    cmd_runs[to_lower(string("sh"))] = sh_run;
-    cmd_runs[to_lower(string("sub"))] = sub_run;
-    cmd_runs[to_lower(string("sw"))] = sw_run;
+    cmd_runs["add"] = add_run;
+    cmd_runs["addi"] = addi_run;
+    cmd_runs["beq"] = beq_run;
+    cmd_runs["bge"] = bge_run;
+    cmd_runs["bgt"] = bgt_run;
+    cmd_runs["ble"] = ble_run;
+    cmd_runs["blt"] = blt_run;
+    cmd_runs["bne"] = bne_run;
+    cmd_runs["call"] = call_run;
+    cmd_runs["div"] = div_run;
+    cmd_runs["j"] = j_run;
+    cmd_runs["jal"] = jal_run;
+    cmd_runs["jalr"] = jalr_run;
+    cmd_runs["jr"] = jr_run;
+    cmd_runs["lb"] = lb_run;
+    cmd_runs["lh"] = lh_run;
+    cmd_runs["li"] = li_run;
+    cmd_runs["lw"] = lw_run;
+    cmd_runs["mul"] = mul_run;
+    cmd_runs["mv"] = mv_run;
+    cmd_runs["ret"] = ret_run;
+    cmd_runs["sb"] = sb_run;
+    cmd_runs["sh"] = sh_run;
+    cmd_runs["sub"] = sub_run;
+    cmd_runs["sw"] = sw_run;
+    cmd_runs["ecall"] = ecall_run;
 }
 
 void Parser::print(){

@@ -31,6 +31,7 @@ private:
     set<string> unconfirmed_labels;
     map<string,unsigned int> labels;
     vector<Command> cmd_queue;
+    set<string> general_strings;
     Memory* mem;
     cpu* regs;
     void parse_line(string line);
@@ -38,6 +39,7 @@ private:
     void put_inits();
     void put_runs();
     void analise_labels();
+    void init_genral_strings();
 public:
     Parser(string file_path,Memory* mem,cpu* regs);
     ~Parser();

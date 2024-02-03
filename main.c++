@@ -29,8 +29,6 @@ int main(int argc,char* argv[]){
     cpu c;
     Parser p(file,&m,&c);
 
-    p.print();
-
     int pc = c.load_word("pc");
     while(pc<p.count_cmds()){
         p.run(pc);
