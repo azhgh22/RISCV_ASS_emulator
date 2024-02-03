@@ -69,13 +69,13 @@ void Parser::parse_line(string line){
         return;
     }
 
-    string cmd_name = tokens[0];
+    string cmd_name = to_lower(tokens[0]);
     tokens.erase(tokens.begin());
     if(cmd_inits.find(cmd_name)!=cmd_inits.end()){
         // create command and put it into cmd_queue;
         Command cmd;
         cmd.cmd_ptr = cmd_inits[cmd_name](tokens,line,*regs,unconfirmed_labels);
-        cmd.type=to_lower(cmd_name);
+        cmd.type=cmd_name;
         cmd_queue.push_back(cmd);
     }else{
         throw invalid_argument(cmd_name+" instuction does not exist");
@@ -116,6 +116,7 @@ void Parser::put_inits(){
     cmd_inits["sub"] = sub_init;
     cmd_inits["sw"] = sw_init;
     cmd_inits["ecall"] = ecall_init;
+    cmd_inits["print"] = print_init;
 }
 
 void Parser::put_runs(){
@@ -145,6 +146,7 @@ void Parser::put_runs(){
     cmd_runs["sub"] = sub_run;
     cmd_runs["sw"] = sw_run;
     cmd_runs["ecall"] = ecall_run;
+    cmd_runs["print"] = print_run;
 }
 
 void Parser::print(){

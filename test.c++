@@ -11,7 +11,15 @@ int p(){
     return *(short*)b;
 }
 
+string to_lower(string cmd){
+    for(int i=0;i<cmd.size();i++){
+        if(cmd[i]>='A' && cmd[i]<='Z'){
+            cmd[i]=(char)('a'+cmd[i]-'A');
+        }
+    }
+    return cmd;
+}
+
 int main(){
-    vector<char*> t;
-    t.push_back(nullptr);
+    cout<<"\""<<endl;
 }

@@ -27,5 +27,6 @@
 #include "../commands/sub.h"
 #include "../commands/sw.h"
 #include "../commands/ecall.h"
+#include "../commands/print.h"
 
 #endif

@@ -2,7 +2,7 @@
 
 void* ble_init(vector<string>& tokens,string line,cpu& regs,set<string>& unconfirmed_labels){
     if(tokens.size()!=3){
-        throw invalid_argument("Invalid arguments in ADD");
+        throw invalid_argument("Invalid arguments in ble");
     }
 
     unconfirmed_labels.insert(tokens[2]);
@@ -12,13 +12,13 @@ void* ble_init(vector<string>& tokens,string line,cpu& regs,set<string>& unconfi
     bool f_number = is_number(f);
 
     if(!f_number && !regs.check(f)){
-        throw invalid_argument("Invalid arguments in blt");
+        throw invalid_argument("Invalid arguments in ble");
     }
 
 
     bool s_number = is_number(s);
     if(!s_number && !regs.check(s)){
-        throw invalid_argument("Invalid arguments in blt");
+        throw invalid_argument("Invalid arguments in ble");
     }
 
     ble* st = new ble;

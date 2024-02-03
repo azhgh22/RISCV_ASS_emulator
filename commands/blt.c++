@@ -2,7 +2,7 @@
 
 void* blt_init(vector<string>& tokens,string line,cpu& regs,set<string>& unconfirmed_labels){
     if(tokens.size()!=3){
-        throw invalid_argument("Invalid arguments in ADD");
+        throw invalid_argument("Invalid arguments in blt");
     }
 
     unconfirmed_labels.insert(tokens[2]);
