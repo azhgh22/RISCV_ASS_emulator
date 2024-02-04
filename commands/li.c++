@@ -14,7 +14,11 @@ void* li_init(vector<string>& tokens,string line,cpu& regs,set<string>& unconfir
     if(is_number(tokens[1])){
         st->literal=to_number(tokens[1]);
         st->label="";
-    }else{
+    }else if(is_char(tokens[1])){
+        st->literal=(int)tokens[1][1];
+        st->label="";
+    }
+    else{
         st->label = tokens[1];
         unconfirmed_labels.insert(tokens[1]);
     }

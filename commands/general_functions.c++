@@ -133,3 +133,7 @@ string to_lower(string cmd){
     }
     return cmd;
 }
+
+bool is_char(string s){
+    return s.size()==3 && s[0]=='\'' && s[2]=='\'';
+}

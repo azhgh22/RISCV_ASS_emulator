@@ -21,5 +21,6 @@ string to_lower(string cmd){
 }
 
 int main(){
-    cout<<"\""<<endl;
+    string s = "\n";
+    cout<<s<<endl;
 }

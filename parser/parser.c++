@@ -117,6 +117,7 @@ void Parser::put_inits(){
     cmd_inits["sw"] = sw_init;
     cmd_inits["ecall"] = ecall_init;
     cmd_inits["print"] = print_init;
+    cmd_inits["rem"] = rem_init;
 }
 
 void Parser::put_runs(){
@@ -147,6 +148,7 @@ void Parser::put_runs(){
     cmd_runs["sw"] = sw_run;
     cmd_runs["ecall"] = ecall_run;
     cmd_runs["print"] = print_run;
+    cmd_runs["rem"] = rem_run;
 }
 
 void Parser::print(){

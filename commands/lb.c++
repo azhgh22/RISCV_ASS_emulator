@@ -21,6 +21,6 @@ void lb_run(void* st,cpu& regs,Memory& mem,map<string,unsigned int>& labels){
     lb info = *(lb*)st;
     int from = regs.load_word(info.from);
     int val = mem.load_byte(info.offset,from);
-    regs.store_byte(info.rg,val);
+    regs.store_word(info.rg,val);
     regs.next(-1);
 }

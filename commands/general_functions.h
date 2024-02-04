@@ -22,5 +22,6 @@ bool isLabel(vector<string>& tokens);
 void tokenise(vector<string>& tokens,string line);
 string remove_comments(string s);
 string ltrim(string s);
+bool is_char(string s);
 
 #endif

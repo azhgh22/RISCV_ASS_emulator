@@ -1,6 +1,7 @@
-#include "sub.h"
+#include "rem.h"
 
-void* sub_init(vector<string>& tokens,string line,cpu& regs,set<string>& unconfirmed_labels){
+
+void* rem_init(vector<string>& tokens,string line,cpu& regs,set<string>& unconfirmed_labels){
     if(tokens.size()!=3){
         throw invalid_argument("Invalid arguments in ADD");
     }
@@ -21,19 +22,19 @@ void* sub_init(vector<string>& tokens,string line,cpu& regs,set<string>& unconfi
         throw invalid_argument("register "+s_rg+" does not exist");
     }
 
-    sub* st = new sub;
+    rem* st = new rem;
+    st->store_rg=st_rg;
     st->first_rg=f_rg;
     st->second_rg=s_rg;
-    st->store_rg = st_rg;
+
     return st;
 }
 
-
-void sub_run(void* st,cpu& regs,Memory& mem,map<string,unsigned int>& labels){
-    sub info = *(sub*)st;
-    int f_reg = regs.load_word(info.first_rg);
-    int s_reg = regs.load_word(info.second_rg);
-    int res = f_reg-s_reg;
-    regs.store_word(info.store_rg,res);
+void rem_run(void* st,cpu& regs,Memory& mem,map<string,unsigned int>& labels){
+    rem info = *(rem*)st;
+    int f_val = regs.load_word(info.first_rg);
+    int s_val = regs.load_word(info.second_rg);
+    int result = f_val%s_val;
+    regs.store_word(info.store_rg,result);
     regs.next(-1);
 }

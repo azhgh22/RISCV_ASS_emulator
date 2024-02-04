@@ -1,12 +1,11 @@
 #include "print.h"
 
 size_t parse_string(string line){
-    cout<<line<<endl;
     size_t ans = string::npos;
     for(int i=0;i<line.size();i++){
         if(line[i]=='\"'){
             if(i==0){
-                i=0;
+                i=ans;
             }
             else if(line[i-1]!='\\'){
                 ans=i;
@@ -34,12 +33,12 @@ void* print_init(vector<string>& tokens,string line,cpu& regs,set<string>& uncon
     int end_idx = parse_string(line);
     if(end_idx==string::npos) __throw_invalid_argument("invlaid arguments in print");
     print* st = new print;
-    st->text = line.substr(0,end_idx);
+    st->text = line.substr(0,line.find_last_of("\""));
     return st;
 }
 
 void print_run(void* st,cpu& regs,Memory& mem,map<string,unsigned int>& labels){
     print info = *(print*)st;
-    cout<<info.text<<endl;
+    cout<<info.text;
     regs.next(-1);
 }

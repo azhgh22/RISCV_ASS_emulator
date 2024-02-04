@@ -28,5 +28,6 @@
 #include "../commands/sw.h"
 #include "../commands/ecall.h"
 #include "../commands/print.h"
+#include "../commands/rem.h"
 
 #endif

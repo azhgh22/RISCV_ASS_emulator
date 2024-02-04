@@ -39,10 +39,12 @@ int cpu::load_byte(string reg){
 }
 
 void cpu::store_word(string reg,int val){
+    if(reg=="x0") return;
     registers[reg]=val;
 }
 
 void cpu::store_half(string reg,int val){
+    if(reg=="x0") return;
     int two_of_32 = 1<<31;
     int mask = two_of_32>>15;
     mask=~mask;
@@ -50,8 +52,9 @@ void cpu::store_half(string reg,int val){
 }
 
 void cpu::store_byte(string reg,int val){
+    if(reg=="x0") return;
     int two_of_32 = 1<<31;
-    int mask = two_of_32>>7;
+    int mask = two_of_32>>23;
     mask=~mask;
     registers[reg]=val&mask;
 }

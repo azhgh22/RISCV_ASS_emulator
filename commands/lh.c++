@@ -21,6 +21,6 @@ void lh_run(void* st,cpu& regs,Memory& mem,map<string,unsigned int>& labels){
     lh info = *(lh*)st;
     int from = regs.load_word(info.from);
     int val = mem.load_half(info.offset,from);
-    regs.store_half(info.rg,val);
+    regs.store_word(info.rg,val);
     regs.next(-1);
 }
